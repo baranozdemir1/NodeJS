@@ -7,7 +7,8 @@
     "start": "node dist/api/v1/index.js",
     "build": "pnpm clean && tsc",
     "dev": "pnpm build && concurrently --no-deprecation \"npx tsc --watch\" \"nodemon -q dist/src/api/v1/index.js\"",
-    "clean": "rimraf ./dist"
+    "clean": "rimraf ./dist",
+    "git:push": "bash git.sh"
   },
   "keywords": [],
   "author": "",
