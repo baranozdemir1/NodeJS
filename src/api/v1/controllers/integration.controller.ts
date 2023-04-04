@@ -16,26 +16,106 @@ class IntegrationController implements Controller {
   }
 
   private initialiseRoutes(): void {
+    this.router.get(
+      `${this.path}/marketplace/hepsiburada`,
+      authenticatedMiddleware,
+      this.getHepsiburada
+    );
     this.router.post(
-      `${this.path}/add/marketplace/hepsiburada`,
+      `${this.path}/marketplace/hepsiburada`,
       [authenticatedMiddleware, validationMiddleware(validate.addHepsiburada)],
       this.addHepsiburada
     );
+    this.router.put(
+      `${this.path}/marketplace/hepsiburada`,
+      [
+        authenticatedMiddleware,
+        validationMiddleware(validate.updateHepsiburada)
+      ],
+      this.updateHepsiburada
+    );
+    this.router.delete(
+      `${this.path}/marketplace/hepsiburada`,
+      authenticatedMiddleware,
+      this.deleteHepsiburada
+    );
   }
+
+  private getHepsiburada = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      if (!req.user) return next(new HttpException(404, 'No logged in user'));
+      const { id } = req.user;
+      const data = await this.IntegrationService.getHepsiburada(id);
+
+      res.status(200).send({ data });
+    } catch (error: Error | any) {
+      next(new HttpException(400, error.message));
+    }
+  };
 
   private addHepsiburada = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> => {
-    if (!req.user) return next(new HttpException(404, 'No logged in user'));
-    const { id } = req.user;
-    const data = await this.IntegrationService.addHepsiburada(id, req.body);
+    try {
+      if (!req.user) return next(new HttpException(404, 'No logged in user'));
+      const { id } = req.user;
+      const data = await this.IntegrationService.addHepsiburada(id, req.body);
 
-    res.status(200).send({
-      userId: id,
-      data
-    });
+      res.status(200).send({
+        userId: id,
+        data
+      });
+    } catch (error: Error | any) {
+      next(new HttpException(400, error.message));
+    }
+  };
+
+  private updateHepsiburada = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      if (!req.user) return next(new HttpException(404, 'No logged in user'));
+      const { id } = req.user;
+      const data = await this.IntegrationService.updateHepsiburada(
+        id,
+        req.body
+      );
+
+      res.status(200).send({
+        userId: id,
+        data
+      });
+    } catch (error: Error | any) {
+      next(new HttpException(400, error.message));
+    }
+  };
+
+  private deleteHepsiburada = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      if (!req.user) return next(new HttpException(404, 'No logged in user'));
+
+      const { id } = req.user;
+      const data = await this.IntegrationService.deleteHepsiburada(id);
+
+      res.status(200).send({
+        userId: id,
+        data
+      });
+    } catch (error: Error | any) {
+      next(new HttpException(400, error.message));
+    }
   };
 }
 
