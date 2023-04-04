@@ -8,7 +8,10 @@
     "build": "pnpm clean && tsc",
     "dev": "pnpm build && concurrently --no-deprecation \"npx tsc --watch\" \"nodemon -q dist/src/api/v1/index.js\"",
     "clean": "rimraf ./dist",
-    "git:push": "bash git.sh"
+    "git:push": "bash git.sh",
+    "prisma:reset": "npx prisma reset",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate:dev": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",

@@ -17,8 +17,18 @@ function validationMiddleware(schema: z.Schema): RequestHandler {
 
       if (e instanceof ZodError) {
         e.errors.forEach(error => {
-          if (error.code === 'invalid_enum_value') {
-            errors.push('Role must be either USER or ADMIN');
+          if (
+            error.code === 'invalid_enum_value' &&
+            error.path[0] === 'status'
+          ) {
+            errors.push('Status must be either ACTIVE or PASIVE');
+          } else if (
+            error.code === 'invalid_enum_value' &&
+            error.path[0] === 'integrationType'
+          ) {
+            errors.push(
+              'Integration Type must be either ERP, MARKETPLACE, SHIPMENT, ECOMMERCE or EINVOICE'
+            );
           } else {
             errors.push(error.message);
           }

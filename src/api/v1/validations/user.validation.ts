@@ -1,8 +1,4 @@
 import { z } from 'zod';
-import { Role } from '@prisma/client';
-
-const roleEnum = z.nativeEnum(Role);
-type roleEnum = z.infer<typeof roleEnum>;
 
 const register = z
   .object({
@@ -17,19 +13,12 @@ const register = z
     password: z
       .string()
       .min(6, { message: 'Password must contain at least 6 characters' })
-      .nonempty({ message: 'Password must contain at least 1 character' }),
-    role: roleEnum.optional().refine(
-      val => {
-        return val === 'USER' || val === 'ADMIN';
-      },
-      { message: 'Role is required' }
-    )
+      .nonempty({ message: 'Password must contain at least 1 character' })
   })
   .required({
     name: true,
     email: true,
-    password: true,
-    role: true
+    password: true
   });
 
 const login = z

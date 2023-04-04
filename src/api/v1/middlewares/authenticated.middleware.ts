@@ -34,9 +34,10 @@ async function authenticatedMiddleware(
       select: {
         id: true,
         createdAt: true,
+        updatedAt: true,
         name: true,
         email: true,
-        role: true
+        integrationId: true
       }
     });
 

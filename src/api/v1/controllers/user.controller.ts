@@ -16,7 +16,7 @@ class UserController implements Controller {
   }
 
   private initialiseRoutes(): void {
-    this.router.get(`${this.path}`, authenticatedMiddleware, this.getUser);
+    this.router.get(this.path, authenticatedMiddleware, this.getUser);
     this.router.post(
       `${this.path}/register`,
       validationMiddleware(validate.register),
@@ -36,12 +36,7 @@ class UserController implements Controller {
   ): Promise<Response | void> => {
     try {
       const { name, email, password } = req.body;
-      const token = await this.UserService.register(
-        name,
-        email,
-        password,
-        'USER'
-      );
+      const token = await this.UserService.register(name, email, password);
 
       res.status(201).json({ token });
     } catch (error: Error | any) {

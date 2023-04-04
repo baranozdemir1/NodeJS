@@ -1,4 +1,3 @@
-import type { Role } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 import token from '@/helpers/token';
@@ -14,8 +13,7 @@ class UserService {
   public async register(
     name: string,
     email: string,
-    password: string,
-    role: Role
+    password: string
   ): Promise<string | Error> {
     try {
       const hasUser = await this.user.findUnique({
@@ -31,8 +29,7 @@ class UserService {
           data: {
             name,
             email,
-            password: hashPass,
-            role
+            password: hashPass
           }
         });
         const accessToken = token.createToken(user);
